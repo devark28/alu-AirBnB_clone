@@ -115,7 +115,7 @@ class TestUser(test_basemodel):
         dt = datetime.utcnow()
         st = User("1", id="5", created_at=dt.isoformat())
         self.assertEqual(st.id, "5")
-        self.assertEqual(st.created_at, dt)
+        self.assertEqual(st.created_at, datetime.fromisoformat(dt.isoformat()))
 
     def test_str(self):
         """Test __str__ representation."""
@@ -130,7 +130,7 @@ class TestUser(test_basemodel):
         self.assertIn("'password': '{}'".format(self.user.password), s)
 
     @unittest.skipIf(type(models.storage) == DBStorage,
-                     "Testing DBStorage")
+        "Testing DBStorage")
     def test_save_filestorage(self):
         """Test save method with FileStorage."""
         old = self.user.updated_at
@@ -138,6 +138,32 @@ class TestUser(test_basemodel):
         self.assertLess(old, self.user.updated_at)
         with open("file.json", "r") as f:
             self.assertIn("User." + self.user.id, f.read())
+
+    def test_to_dict_contains_correct_keys(self):
+        """Test that to_dict method contains correct keys."""
+        u_dict = self.user.to_dict()
+        self.assertIn('id', u_dict)
+        self.assertIn('email', u_dict)
+        self.assertIn('created_at', u_dict)
+        self.assertIn('updated_at', u_dict)
+        self.assertIn('__class__', u_dict)
+
+    def test_to_dict_values_are_correct_type(self):
+        """Test that values in dict returned from to_dict are correct type"""
+        u_dict = self.user.to_dict()
+        self.assertEqual(type(u_dict['created_at']), str)
+        self.assertEqual(type(u_dict['updated_at']), str)
+        self.assertEqual(type(u_dict['__class__']), str)
+        self.assertEqual(u_dict['__class__'], 'User')
+
+    def test_created_at_is_datetime(self):
+        """Test that created_at is a datetime object"""
+        self.assertEqual(datetime, type(User().created_at))
+
+    def test_updated_at_is_datetime(self):
+        """Test that updated_at is a datetime object"""
+        self.assertEqual(datetime, type(User().updated_at))
+        self.assertIn("User." + self.user.id, f.read())
 
     @unittest.skipIf(type(models.storage) == FileStorage,
                      "Testing FileStorage")
