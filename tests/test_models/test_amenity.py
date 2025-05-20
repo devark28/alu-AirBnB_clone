@@ -10,10 +10,11 @@ from models import amenity
 from models.base_model import BaseModel
 import pep8
 import unittest
+from tests.test_models.test_base_model import test_basemodel
 Amenity = amenity.Amenity
 
 
-class TestAmenityDocs(unittest.TestCase):
+class TestAmenityDocs(test_basemodel):
     """Tests to check the documentation and style of Amenity class"""
     @classmethod
     def setUpClass(cls):
@@ -105,3 +106,7 @@ class TestAmenity(unittest.TestCase):
         amenity = Amenity()
         string = "[Amenity] ({}) {}".format(amenity.id, amenity.__dict__)
         self.assertEqual(string, str(amenity))
+
+
+if __name__ == '__main__':
+    unittest.main()

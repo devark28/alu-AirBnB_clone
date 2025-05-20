@@ -10,11 +10,12 @@ from models.base_model import Base, BaseModel
 from models.user import User
 from models.engine.db_storage import DBStorage
 from models.engine.file_storage import FileStorage
+from tests.test_models.test_base_model import test_basemodel
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm import sessionmaker
 
 
-class TestUser(unittest.TestCase):
+class TestUser(test_basemodel):
     """Unittests for testing the User class."""
 
     @classmethod
