@@ -3,9 +3,10 @@
 from models.state import State
 from tests.test_models.test_base_model import TestBaseModel
 from models.city import City
+import unittest
 
 
-class TestCity(TestBaseModel):
+class TestCity(unittest.TestCase):
     """ Test for city"""
 
     def __init__(self, *args, **kwargs):
